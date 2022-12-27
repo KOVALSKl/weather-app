@@ -1,0 +1,29 @@
+.page {
+    & {
+        width: 100%;
+        min-height: 369px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    & .content {
+        & {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 48px;
+        }
+
+        & .days-list {
+            & {
+                display: flex;
+                gap: 42px;
+
+                list-style-type: none;
+                padding: 0;
+            }
+        }
+    }
+}

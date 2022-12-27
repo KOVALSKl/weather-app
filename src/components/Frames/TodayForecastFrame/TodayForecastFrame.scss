@@ -1,0 +1,89 @@
+@import "../../../styles.scss";
+
+.today-forecast-frame {
+    & {
+        padding: 34px 34px;
+
+        width: 310px;
+        height: 301px;
+
+        border: 1px solid $items-border-color;
+        border-radius: 45px;
+
+        background: url("../../../images/colors.svg") center center no-repeat;
+        background-size: cover;
+    }
+
+    & .header {
+        & {
+            display: flex;
+            justify-content: space-between;
+
+            padding-bottom: 20px;
+
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.2);
+        }
+
+        & span {
+            font-weight: 400;
+            font-size: 30px;
+
+            color: #ffffff;
+        }
+    }
+
+    & .main-content {
+        & {
+            display: flex;
+            flex-direction: column;
+
+            color: #ffffff;
+        }
+
+        & .temperature-forecast-icon-section {
+            & {
+                display: flex;
+                justify-content: space-between;
+
+                padding-top: 12px;
+
+                position: relative;
+            }
+
+            & .temperature {
+                font-weight: 500;
+                font-size: 100px;
+            }
+
+            & .forecast-icon {
+                position: relative;
+                top: 12px;
+                right: -18px;
+
+                width: 130px;
+            }
+        }
+
+        & .main-forecast-info {
+            & {
+                padding-top: 15px;
+
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+
+                gap: 10px;
+            }
+
+            & .pressure-humidity-section {
+                display: flex;
+                gap: 15px;
+            }
+
+            &__item {
+                font-weight: 350;
+                font-size: 20px;
+            }
+        }
+    }
+}

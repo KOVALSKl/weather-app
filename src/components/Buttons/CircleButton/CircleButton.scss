@@ -1,0 +1,23 @@
+@import "../../../styles.scss";
+
+.circle-button {
+    & {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 70px;
+        height: 70px;
+
+        border: 1px solid $items-border-color;
+        border-radius: 100px;
+
+        background: $items-background-color;
+
+        cursor: pointer;
+    }
+
+    &:active {
+        background: rgba($items-background-color, 0.6);
+    }
+}

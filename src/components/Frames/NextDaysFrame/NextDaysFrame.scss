@@ -1,0 +1,35 @@
+@import "../../../styles.scss";
+
+.next-days-frame {
+    & {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+
+        width: 72px;
+        height: 301px;
+
+        padding: 34px 38px;
+
+        background: $items-background-color;
+        border: 1px solid $items-border-color;
+        border-radius: 45px;
+
+        color: #ffffff;
+    }
+
+    &__day-title {
+        font-weight: 400;
+        font-size: 30px;
+
+        padding: 0px 14px 20px 14px;
+
+        border-bottom: 1px solid $items-border-color;
+    }
+
+    &__temperature {
+        font-weight: 500;
+        font-size: 50px;
+    }
+}
