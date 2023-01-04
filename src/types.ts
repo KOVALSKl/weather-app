@@ -1,3 +1,8 @@
+export type CurrentGeolocation = {
+    lat: number | undefined,
+    lon: number | undefined,
+}
+
 export type WeatherForecast = {
     current: CurrentWeather | null,
     next: Forecast | null,

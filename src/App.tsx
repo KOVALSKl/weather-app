@@ -1,7 +1,7 @@
 import { memo, useContext, useEffect, useRef, useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { WeatherForecastContext } from './components/AppRouter/AppRouter';
-import { beautifyTime, CurrentWeather, Forecast, UVIndex } from './types';
+import { beautifyTime, CurrentGeolocation, CurrentWeather, Forecast, UVIndex } from './types';
 import { YMaps, Map, Placemark, FullscreenControl } from '@pbe/react-yandex-maps';
 
 import CircleButton from './components/Buttons/CircleButton/CircleButton';
@@ -21,27 +21,62 @@ function App() {
 
   const [currentWeather, setCurrentWeather] = useState<CurrentWeather>();
   const [forecast, setForecast] = useState<Forecast>();
+  const [geoposition, setGeoposition] = useState<CurrentGeolocation>();
 
-  const [place, setPlace] = useState<string>('Bebra');
+  const [place, setPlace] = useState<string>();
 
   useEffect(() => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setGeoposition({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+        })
+      });
+    }
+  }, [])
 
-    axios.get(`${process.env.REACT_APP_WEATHER_LINK}forecast?q=${place}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=metric`)
-      .then(({ data }: { data: Forecast }) => {
-        if (data.list.length > 0) {
-          setForecast(data);
+  useEffect(() => {
+    if (geoposition?.lat && geoposition.lon) {
+      axios.get(`${process.env.REACT_APP_WEATHER_LINK}weather`, {
+        params: {
+          lat: geoposition?.lat,
+          lon: geoposition?.lon,
+          appid: process.env.REACT_APP_WEATHER_API_KEY,
         }
       })
-      .catch((error: Error) => console.log(error));
+        .then(({ data }: { data: CurrentWeather }) => {
+          if (data.cod === 200) {
+            setPlace(data.name);
+          }
+        })
+    }
+  }, [geoposition])
 
-    axios.get(`${process.env.REACT_APP_WEATHER_LINK}weather?q=${place}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=metric`)
-      .then(({ data }: { data: CurrentWeather }) => {
-        if (data.cod === 200) {
-          setCurrentWeather(data);
+  useEffect(() => {
+    if (place) {
+      axios.get(`${process.env.REACT_APP_WEATHER_LINK}forecast`, {
+        params: {
+          q: place,
+          appid: process.env.REACT_APP_WEATHER_API_KEY,
+          units: 'metric'
         }
       })
-      .catch((error: Error) => console.log(error));
+        .then(({ data }: { data: Forecast }) => {
+          if (data.list.length > 0) {
+            setForecast(data);
+          }
+        })
+        .catch((error: Error) => console.log(error));
 
+      axios.get(`${process.env.REACT_APP_WEATHER_LINK}weather?q=${place}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=metric`)
+        .then(({ data }: { data: CurrentWeather }) => {
+          if (data.cod === 200) {
+            setCurrentWeather(data);
+          }
+        })
+        .catch((error: Error) => console.log(error));
+    }
   }, [place])
 
   useEffect(() => {
@@ -71,7 +106,13 @@ function App() {
               <img src={require('./images/bell.svg').default} />
             </CircleButton>
           </div>
-          <span className='city-info'>{forecast?.city.name}, {forecast?.city.country}</span>
+          <span className='city-info'>
+            {
+              (currentWeather?.name || currentWeather?.sys.country)
+                ? `${currentWeather?.name}, ${currentWeather?.sys.country}`
+                : 'Trying to find you...'
+            }
+          </span>
         </div>
         <SearchBar setSearch={setPlace} />
         <div className='right-corner'>
