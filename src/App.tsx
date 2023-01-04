@@ -59,16 +59,6 @@ function App() {
 
   const mapRef = useRef<any>(null);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDate(new Date());
-    }, 1000)
-
-    return () => {
-      clearInterval(interval);
-    }
-  }, [])
-
   return (
     <div className="App">
       <header className='header'>
@@ -130,6 +120,9 @@ function App() {
                       }}
                       modules={['geoObject.addon.balloon', 'geoObject.addon.hint']}
                       options={{
+                        iconLayout: 'default#image',
+                        iconImageHref: require(`./images/weather-icons/${currentWeather.weather[0].icon}.svg`),
+                        iconImageSize: [64, 64],
                         hasHint: true,
                         openHintOnHover: true,
                         hasBalloon: true,
@@ -155,7 +148,7 @@ function App() {
                       <span className='units'>km/h</span>
                     </div>
                     <span className='current-time'>
-                      {beautifyTime(date)}
+                      {beautifyTime(new Date((currentWeather.dt + currentWeather.timezone - 10800) * 1000))}
                     </span>
                   </div>
                 </div>

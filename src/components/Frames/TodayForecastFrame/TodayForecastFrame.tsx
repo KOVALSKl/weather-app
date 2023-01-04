@@ -9,23 +9,11 @@ type TodayForecastFrameProps = {
 
 function TodayForecastFrame({ item }: TodayForecastFrameProps) {
 
-    const [date, setDate] = useState<Date>(new Date());
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setDate(new Date());
-        }, 1000)
-
-        return () => {
-            clearInterval(interval);
-        }
-    }, [])
-
     return (
         <div className='today-forecast-frame'>
             <div className='header'>
                 <span className='header__span-day-name'>{getDayName(new Date(item.dt * 1000), true)}</span>
-                <span className='header__span-time'>{beautifyTime(date)}</span>
+                <span className='header__span-time'>{beautifyTime(new Date((item.dt + item.timezone - 10800) * 1000))}</span>
             </div>
             <div className='main-content'>
                 <div className='temperature-forecast-icon-section'>

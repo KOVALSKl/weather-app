@@ -102,6 +102,10 @@
           gap: 50px;
         }
 
+        &__header + div {
+          filter: invert(1);
+        }
+
         &__header {
           & {
             display: flex;
@@ -140,6 +144,10 @@
         }
 
         & .ymaps-2-1-79 {
+          &-image {
+            filter: invert(1);
+          }
+
           &-balloon {
             &__content {
               font-size: 20px;
